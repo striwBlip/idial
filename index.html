@@ -138,7 +138,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":709968,"index.wasm":49219187},"focusCanvas":true,"gdextensionLibs":[],"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":709968,"index.wasm":35649444},"focusCanvas":true,"gdextensionLibs":[],"serviceWorker":"index.service.worker.js"};
 const engine = new Engine(GODOT_CONFIG);
 
 (function () {
@@ -209,39 +209,12 @@ const engine = new Engine(GODOT_CONFIG);
 	}
 
 	function displayFailureNotice(err) {
-    // Безопасное получение сообщения об ошибке
-    let msg = "Ошибка загрузки игры";
-    
-    try {
-        if (typeof err === 'string') {
-            msg = err;
-        } else if (err && err.message) {
-            msg = err.message;
-        } else if (err && err.toString) {
-            msg = err.toString();
-        }
-    } catch (e) {
-        console.error("Ошибка при обработке ошибки:", e);
-        msg = "Неизвестная ошибка";
-    }
-    
-    console.error("Godot Web Export Error:", msg);
-    console.error("Full error object:", err);
-    
-    // Безопасный вызов остальных функций
-    try {
-        if (typeof setStatusNotice === 'function') {
-            setStatusNotice(msg);
-        }
-        if (typeof setStatusMode === 'function') {
-            setStatusMode('notice');
-        }
-    } catch (e) {
-        console.error("Ошибка при обновлении статуса:", e);
-    }
-    
-    initializing = false;
-}
+		const msg = err.message || err;
+		console.error(msg);
+		setStatusNotice(msg);
+		setStatusMode('notice');
+		initializing = false;
+	}
 
 	const missing = Engine.getMissingFeatures();
 	if (missing.length !== 0) {
